@@ -1,0 +1,9 @@
+C:\Progetti\asiknow-web\src\AsIKnow.Web\LightWebSocket\bin\Debug\netcoreapp2.0\LightWebSocket.deps.json
+C:\Progetti\asiknow-web\src\AsIKnow.Web\LightWebSocket\bin\Debug\netcoreapp2.0\LightWebSocket.dll
+C:\Progetti\asiknow-web\src\AsIKnow.Web\LightWebSocket\obj\Debug\netcoreapp2.0\LightWebSocket.csproj.CoreCompileInputs.cache
+C:\Progetti\asiknow-web\src\AsIKnow.Web\LightWebSocket\obj\Debug\netcoreapp2.0\LightWebSocket.AssemblyInfoInputs.cache
+C:\Progetti\asiknow-web\src\AsIKnow.Web\LightWebSocket\obj\Debug\netcoreapp2.0\LightWebSocket.AssemblyInfo.cs
+C:\Progetti\asiknow-web\src\AsIKnow.Web\LightWebSocket\bin\Debug\netcoreapp2.0\LightWebSocket.pdb
+C:\Progetti\asiknow-web\src\AsIKnow.Web\LightWebSocket\obj\Debug\netcoreapp2.0\LightWebSocket.csprojResolveAssemblyReference.cache
+C:\Progetti\asiknow-web\src\AsIKnow.Web\LightWebSocket\obj\Debug\netcoreapp2.0\LightWebSocket.dll
+C:\Progetti\asiknow-web\src\AsIKnow.Web\LightWebSocket\obj\Debug\netcoreapp2.0\LightWebSocket.pdb
