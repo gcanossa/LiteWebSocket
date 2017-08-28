@@ -9,7 +9,7 @@ namespace LiteWebSocket.Protocol
     [MessageTypePrefix("protocol")]
     public class Messages
     {
-        public class SyncMessage : Message
+        public class Sync_RequestMessage : Message
         {
             public string Valore { get; set; }
         }

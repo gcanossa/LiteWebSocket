@@ -42,11 +42,11 @@ namespace LiteWebSocket.Routing.Impl
                 return false;
 
             MessageTypeAttribute mt_attr = type.GetCustomAttributes(typeof(MessageTypeAttribute), true).FirstOrDefault() as MessageTypeAttribute;
-            if (mt_attr != null && !string.IsNullOrEmpty(data.Name))
-                throw new InvalidOperationException("Message nesting hierarchy cannot have multiple MessageTypeAttribute");
-
             if (mt_attr != null)
             {
+                if(!string.IsNullOrEmpty(data.Name))
+                        throw new InvalidOperationException("Message nesting hierarchy cannot have multiple MessageTypeAttribute");
+
                 data.Scopes = mt_attr.Scopes;
                 data.Name = mt_attr.Name;
 
@@ -58,7 +58,7 @@ namespace LiteWebSocket.Routing.Impl
                 if(mp_attr != null)
                 {
                     if (string.IsNullOrEmpty(data.Name))
-                        throw new ArgumentException("The MessageTypePrefixAttributecannot be usedon a terminal Message type");
+                        throw new ArgumentException("The MessageTypePrefixAttribute cannot be used on a terminal Message type");
 
                     data.Scopes = mp_attr.Scopes.Concat(data.Scopes ?? new string[0]).ToArray();
 
@@ -67,9 +67,9 @@ namespace LiteWebSocket.Routing.Impl
                 else
                 {
                     if (string.IsNullOrEmpty(data.Name))
-                        data.Name = Regex.Replace(Regex.Replace(type.Name, "Message$", ""), "MessageScope$", "").Replace('_', '-').ToLower();
+                        data.Name = Regex.Replace(Regex.Replace(type.Name, "[\\-_]Message$", ""), "[\\-_]MessageScope$", "").Replace('_', '-').ToLower();
                     else
-                        data.Scopes = new string[] { Regex.Replace(Regex.Replace(type.Name, "Message$", ""), "MessageScope$", "").Replace('_', '-').ToLower() }.Concat(data.Scopes??new string[0]).ToArray();
+                        data.Scopes = new string[] { Regex.Replace(Regex.Replace(type.Name, "[\\-_]Message$", ""), "[\\-_]MessageScope$", "").Replace('_', '-').ToLower() }.Concat(data.Scopes??new string[0]).ToArray();
 
                     return true;
                 }

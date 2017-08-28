@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace LiteWebSocket
-{
+{//TODO: see wrapping and error handling
     internal class LiteWebSocketHandlers
     {
         public static Action<IApplicationBuilder> SyncHandler(MessageControllerResolver resolver)
@@ -18,7 +18,7 @@ namespace LiteWebSocket
             {
                 app.Run(FunctionWrappersExtensions.AsHttpEndpoint(async context =>
                 {
-                    await context.Response.WriteBodyAsStringAsync(resolver.Accept(await context.Request.ReadBodyAsStringAsync()), "application/json");
+                    await context.Response.WriteBodyAsStringAsync(resolver.AcceptSerializedBulk(await context.Request.ReadBodyAsStringAsync()), "application/json");
                 }));
             });
         }

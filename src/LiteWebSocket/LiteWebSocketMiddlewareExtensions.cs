@@ -28,12 +28,12 @@ namespace LiteWebSocket
         {
             Routing.MessageControllerResolver resolver = ext.ApplicationServices.GetService<Routing.MessageControllerResolver>();
 
-            resolver.AddSupportedMessage<Protocol.Messages.SyncMessage>();
+            resolver.AddSupportedMessage<Protocol.Messages.Sync_RequestMessage>();
             resolver.AddSupportedMessage<Protocol.Messages.Sync_ResponseMessage>();
             resolver.RegisterController<Protocol.Controller>();
 
             return ext
-                .UseWebSockets(new WebSocketOptions() {})
+                .UseWebSockets(new WebSocketOptions() {})//TODO: configure
                 .Map(options.BasePath.Add(new PathString(LiteWebSocketDefaults.SyncEndpoint)), LiteWebSocketHandlers.SyncHandler(resolver))
                 .Map(options.BasePath.Add(new PathString(LiteWebSocketDefaults.MonitorEndpoint)), LiteWebSocketHandlers.MonitorHandler(resolver))
                 .Map(options.BasePath.Add(new PathString(LiteWebSocketDefaults.SocketEndpoint)), LiteWebSocketHandlers.SocketHandler(resolver))

@@ -35,7 +35,7 @@ namespace LiteWebSocket.Routing
             _serviceProvider = serviceProvider;
         }
         
-        protected virtual IEnumerable<Message> Accept(Message message)
+        protected virtual IEnumerable<Message> AcceptMessage(Message message)
         {
             if (!_registredHandlers.Values.Any(p => p == message.GetType()))
                 throw new NotSupportedMessageTypeException($"type: {message.GetType().FullName}");
@@ -47,6 +47,7 @@ namespace LiteWebSocket.Routing
             OperationContext ctx = GetContext();
             foreach (KeyValuePair<MethodInfo, MessageController> item in ctrls)
             {
+                //TODO: wrapping
                 item.Value.Context = ctx;
                 ctx.AddResult(item.Key.Invoke(item.Value, new object[] { message }));
             }
@@ -54,7 +55,7 @@ namespace LiteWebSocket.Routing
             return ctx.Results;
         }
 
-        public string Accept(string messages)
+        public string AcceptSerializedBulk(string messages)
         {
             IEnumerable<Message> msgs = _serializer.Deserialize(messages, _supportedTypes);
             if (msgs == null)
@@ -63,7 +64,8 @@ namespace LiteWebSocket.Routing
             List<Task<IEnumerable<Message>>> _results = new List<Task<IEnumerable<Message>>>();
             foreach (Message item in msgs)
             {
-                _results.Add(Task.Run(() => Accept(item)));
+                //TODO: add wrapping
+                _results.Add(Task.Run(() => AcceptMessage(item)));
             }
 
             return _serializer.Serialize(_results.Select(p=>p.ConfigureAwait(false).GetAwaiter().GetResult()).SelectMany(p=>p), _supportedTypes);

@@ -14,13 +14,15 @@ namespace LiteWebSocket
         public IEnumerable<Message> Deserialize(string messages, Dictionary<string, Type> supportedTypes)
         {
             if (string.IsNullOrEmpty(messages))
-                yield return null;
+                yield break;
             else
             {
                 foreach (JObject item in JsonConvert.DeserializeObject<object[]>(messages))
                 {
                     if (!supportedTypes.ContainsKey(item["type"].Value<string>()))
-                        yield return null;
+                    {
+                        yield return null;//TODO: unknown type, type not set
+                    }
                     else
                     {
                         yield return (Message)item.ToObject(supportedTypes[item["type"].Value<string>()]);

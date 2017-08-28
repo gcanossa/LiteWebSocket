@@ -51,7 +51,7 @@ namespace LiteWebSocket
             {
                 byte[] data = new byte[ext.ContentLength.Value];
                 await ext.Body.ReadAsync(data, 0, data.Length);
-
+                //TODO: check encoding
                 return Encoding.UTF8.GetString(data);
             }
         }

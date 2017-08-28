@@ -9,7 +9,7 @@ namespace LiteWebSocket.Routing
         public string[] Scopes { get; set; }
         public string Name { get; set; }
 
-        public string MessageType => string.Join(":", string.Join(":", Scopes??new string[0]), Name);
-        public string ScopesPath => string.Join(':', Scopes);
+        public string MessageType => string.Join(":", ScopesPath??"", Name??"");
+        public string ScopesPath => Scopes!=null?string.Join(':', Scopes):null;
     }
 }
