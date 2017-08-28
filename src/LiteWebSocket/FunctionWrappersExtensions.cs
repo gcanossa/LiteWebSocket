@@ -9,6 +9,11 @@ namespace LiteWebSocket
 {
     internal static class FunctionWrappersExtensions
     {
+        public static T WaitTaskResults<T>(Task<T> task)
+        {
+            return task.ConfigureAwait(false).GetAwaiter().GetResult();
+        }
+
         public static RequestDelegate AsHttpEndpoint(this RequestDelegate ext)
         {
             return async context =>
@@ -36,6 +41,27 @@ namespace LiteWebSocket
                     context.Response.StatusCode = 400;
                 }
             };
+        }
+
+        public static async Task<string> ReadBodyAsStringAsync(this HttpRequest ext)
+        {
+            if (!ext.ContentLength.HasValue)
+                return null;
+            else
+            {
+                byte[] data = new byte[ext.ContentLength.Value];
+                await ext.Body.ReadAsync(data, 0, data.Length);
+
+                return Encoding.UTF8.GetString(data);
+            }
+        }
+
+        public static async Task WriteBodyAsStringAsync(this HttpResponse ext, string content, string contentType)
+        {
+            ext.ContentType = contentType;
+
+            byte[] data = Encoding.UTF8.GetBytes(content);
+            await ext.Body.WriteAsync(data, 0, data.Length);
         }
     }
 }

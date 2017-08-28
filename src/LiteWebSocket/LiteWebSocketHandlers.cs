@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using LiteWebSocket.Routing;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -11,33 +12,47 @@ namespace LiteWebSocket
 {
     internal class LiteWebSocketHandlers
     {
-        public static void SyncHandler(IApplicationBuilder app)
+        public static Action<IApplicationBuilder> SyncHandler(MessageControllerResolver resolver)
         {
-            app.Run(FunctionWrappersExtensions.AsHttpEndpoint(async context =>
+            return (Action<IApplicationBuilder>)(app =>
             {
-                await context.Response.WriteAsync("Sync");
-            }));
+                app.Run(FunctionWrappersExtensions.AsHttpEndpoint(async context =>
+                {
+                    await context.Response.WriteBodyAsStringAsync(resolver.Accept(await context.Request.ReadBodyAsStringAsync()), "application/json");
+                }));
+            });
         }
-        public static void MonitorHandler(IApplicationBuilder app)
+        public static Action<IApplicationBuilder> MonitorHandler(MessageControllerResolver resolver)
         {
-            app.Run(FunctionWrappersExtensions.AsHttpEndpoint(async context =>
+            return (Action<IApplicationBuilder>)(app =>
             {
-                await context.Response.WriteAsync("Monitor");
-            }));
+                app.Run(FunctionWrappersExtensions.AsHttpEndpoint(async context =>
+                {
+                    //resolver.Accept()
+                    await context.Response.WriteAsync("Monitor");
+                }));
+            });
         }
-        public static void SocketHandler(IApplicationBuilder app)
+        public static Action<IApplicationBuilder> SocketHandler(MessageControllerResolver resolver)
         {
-            app.Run(FunctionWrappersExtensions.AsHttpEndpoint(async context =>
+            return (Action<IApplicationBuilder>)(app =>
             {
-                await context.Response.WriteAsync("Socket");
-            }));
+                app.Run(FunctionWrappersExtensions.AsHttpEndpoint(async context =>
+                {
+                    //resolver.Accept()
+                    await context.Response.WriteAsync("Socket");
+                }));
+            });
         }
-        public static void SocketWsHandler(IApplicationBuilder app)
+        public static Action<IApplicationBuilder> SocketWsHandler(MessageControllerResolver resolver)
         {
-            app.Run(FunctionWrappersExtensions.AsWsEndpoint(async (context, webSocket) =>
+            return (Action<IApplicationBuilder>)(app =>
             {
-                await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "result.CloseStatusDescription", CancellationToken.None);
-            }));
+                app.Run(FunctionWrappersExtensions.AsWsEndpoint(async (context, webSocket) =>
+                {
+                    await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "result.CloseStatusDescription", CancellationToken.None);
+                }));
+            });
         }
     }
 }

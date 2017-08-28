@@ -7,8 +7,8 @@ namespace LiteWebSocket.Routing
 {
     public interface IMessageControllerResolutionConvention
     {
-        Dictionary<MethodInfo, Type> GetControllerActions(SocketController controller);
+        Dictionary<MethodInfo, Type> GetControllerActions(MessageController controller);
         Dictionary<MethodInfo, Type> GetControllerActions(Type type);
-        Dictionary<MethodInfo, Type> GetControllerActions<T>() where T : SocketController;
+        Dictionary<MethodInfo, Type> GetControllerActions<T>() where T : MessageController;
     }
 }
