@@ -1,52 +1,78 @@
-﻿using System;
+﻿using LiteWebSocket.Models;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Linq;
-using LiteWebSocket.Models;
 
 namespace LiteWebSocket.Routing.Impl
 {
     public class DefaultMessageNameResolutionConvention : IMessageNameResolutionConvention
     {
-        //search for attributes then search for underscores and nested types underscores
         public RouteData GetRouteData(Message message)
         {
-            Type msg_type = message.GetType();
+            return GetRouteData(message.GetType());
+        }
+        
+        public RouteData GetRouteData<T>() where T : Message
+        {
+            return GetRouteData(typeof(T));
+        }
 
-            MessageTypeAttribute mt_attr = msg_type.GetCustomAttributes(typeof(MessageTypeAttribute), true).FirstOrDefault() as MessageTypeAttribute;
+        public RouteData GetRouteData(Type type)
+        {
+            if (!typeof(Message).IsAssignableFrom(type))
+                throw new ArgumentException($"type must inherit from {typeof(Message).FullName} type", nameof(type));
+            if(!type.IsClass)
+                throw new ArgumentException($"type must be a class", nameof(type));
+            if (type.IsAbstract)
+                throw new ArgumentException($"type must not be abstract", nameof(type));
 
-            if(mt_attr!=null)
+            RouteData result = new RouteData();
+
+            while (TryAddScopesAndName(ref result, type) && type.IsNested)
+                type=type.DeclaringType;
+
+            return result;
+        }
+        
+        protected bool TryAddScopesAndName(ref RouteData data, Type type)
+        {
+            if (type == null)
+                return false;
+
+            MessageTypeAttribute mt_attr = type.GetCustomAttributes(typeof(MessageTypeAttribute), true).FirstOrDefault() as MessageTypeAttribute;
+            if (mt_attr != null && !string.IsNullOrEmpty(data.Name))
+                throw new InvalidOperationException("Message nesting hierarchy cannot have multiple MessageTypeAttribute");
+
+            if (mt_attr != null)
             {
-                return new RouteData()
-                {
-                    MessageType = string.Join(":", mt_attr.Scopes, mt_attr.Name),
-                    MessageScopes = mt_attr.Scopes,
-                    MessageName = mt_attr.Name,
-                    Controller = "",
-                    Action = ""
-                };
+                data.Scopes = mt_attr.Scopes;
+                data.Name = mt_attr.Name;
+
+                return false;
             }
             else
             {
-                List<string> scopes = new List<string>();
-                Type tmp = msg_type;
-                while(tmp.IsNested)
+                MessageTypePrefixAttribute mp_attr = type.GetCustomAttributes(typeof(MessageTypePrefixAttribute), true).FirstOrDefault() as MessageTypePrefixAttribute;
+                if(mp_attr != null)
                 {
-                    scopes.Add(Regex.Replace(Regex.Replace(tmp.Name, "Message$",""),"MessageScope$",""));
-                    tmp = tmp.DeclaringType;
+                    if (string.IsNullOrEmpty(data.Name))
+                        throw new ArgumentException("The MessageTypePrefixAttributecannot be usedon a terminal Message type");
+
+                    data.Scopes = mp_attr.Scopes.Concat(data.Scopes ?? new string[0]).ToArray();
+
+                    return false;
                 }
-
-                scopes = scopes.Reverse<string>().ToList();
-
-                return new RouteData()
+                else
                 {
-                    MessageType = string.Join(":",scopes),
-                    MessageScopes = scopes.GetRange(0,scopes.Count-1).ToArray(),
-                    MessageName = scopes.Last(),
-                    Controller = "",
-                    Action = ""
-                };
+                    if (string.IsNullOrEmpty(data.Name))
+                        data.Name = Regex.Replace(Regex.Replace(type.Name, "Message$", ""), "MessageScope$", "").Replace('_', '-').ToLower();
+                    else
+                        data.Scopes = new string[] { Regex.Replace(Regex.Replace(type.Name, "Message$", ""), "MessageScope$", "").Replace('_', '-').ToLower() }.Concat(data.Scopes??new string[0]).ToArray();
+
+                    return true;
+                }
             }
         }
     }
