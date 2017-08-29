@@ -67,9 +67,9 @@ namespace LiteWebSocket.Routing.Impl
                 else
                 {
                     if (string.IsNullOrEmpty(data.Name))
-                        data.Name = Regex.Replace(Regex.Replace(type.Name, "[\\-_]Message$", ""), "[\\-_]MessageScope$", "").Replace('_', '-').ToLower();
+                        data.Name = Regex.Replace(Regex.Replace(type.Name, "[\\-_]?Message$", ""), "[\\-_]?MessageScope$", "").Replace('_', '-').ToLower();
                     else
-                        data.Scopes = new string[] { Regex.Replace(Regex.Replace(type.Name, "[\\-_]Message$", ""), "[\\-_]MessageScope$", "").Replace('_', '-').ToLower() }.Concat(data.Scopes??new string[0]).ToArray();
+                        data.Scopes = new string[] { Regex.Replace(Regex.Replace(type.Name, "[\\-_]?Message$", ""), "[\\-_]?MessageScope$", "").Replace('_', '-').ToLower() }.Concat(data.Scopes??new string[0]).ToArray();
 
                     return true;
                 }

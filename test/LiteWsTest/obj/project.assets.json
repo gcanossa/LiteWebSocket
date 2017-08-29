@@ -3025,22 +3025,22 @@
       ]
     },
     "System.Collections.Immutable/1.2.0": {
-      "sha512": "Cma8cBW6di16ZLibL8LYQ+cLjGzoKxpOTu/faZfDcx94ZjAGq6Nv5RO7+T1YZXqEXTZP9rt1wLVEONVpURtUqw==",
+      "sha512": "Ts0jhV5XcQoHOEAaww/thVq2nsr+HJk9LDJmDG/4k7q6lruCkAPYiTqeosF9yfW+qtomesiN5ZshErxZQQfAXQ==",
       "type": "package",
       "path": "system.collections.immutable/1.2.0",
       "files": [
-        "System.Collections.Immutable.1.2.0.nupkg.sha512",
-        "System.Collections.Immutable.nuspec",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/netstandard1.0/System.Collections.Immutable.dll",
         "lib/netstandard1.0/System.Collections.Immutable.xml",
         "lib/portable-net45+win8+wp8+wpa81/System.Collections.Immutable.dll",
-        "lib/portable-net45+win8+wp8+wpa81/System.Collections.Immutable.xml"
+        "lib/portable-net45+win8+wp8+wpa81/System.Collections.Immutable.xml",
+        "system.collections.immutable.1.2.0.nupkg.sha512",
+        "system.collections.immutable.nuspec"
       ]
     },
     "System.Collections.NonGeneric/4.3.0": {
-      "sha512": "prtjIEMhGUnQq6RnPEYLpFt8AtLbp9yq2zxOSrY7KJJZrw25Fi97IzBqY7iqssbM61Ek5b8f3MG/sG1N2sN5KA==",
+      "sha512": "xuUyU/DYDLQgg1z4yQGUZOQmgsrMLtz8eg5HQPgRb8UvbtjQivfQcZNoOg73t3r9ooo1aCeUiiz3SsS38dsywQ==",
       "type": "package",
       "path": "system.collections.nongeneric/4.3.0",
       "files": [
@@ -3077,7 +3077,7 @@
       ]
     },
     "System.Collections.Specialized/4.3.0": {
-      "sha512": "Epx8PoVZR0iuOnJJDzp7pWvdfMMOAvpUo95pC4ScH2mJuXkKA2Y4aR3cG9qt2klHgSons1WFh4kcGW7cSXvrxg==",
+      "sha512": "Mr6KgMb4LPTGY0ys91El5ndoADp5PqImKk5EpmxuNnVb76WE2Qqnf0JKldDfBXLwDYb4O/WiG9vw2/DRqxY3YQ==",
       "type": "package",
       "path": "system.collections.specialized/4.3.0",
       "files": [
@@ -3239,7 +3239,7 @@
       ]
     },
     "System.ComponentModel.Primitives/4.3.0": {
-      "sha512": "j8GUkCpM8V4d4vhLIIoBLGey2Z5bCkMVNjEZseyAlm4n5arcsJOeI3zkUP+zvZgzsbLTYh4lYeP/ZD/gdIAPrw==",
+      "sha512": "97OOZtdqtfkad1xYV6u7+7C7f1ZX68izp7fO5zRl+7MHgtmBelpS4WG5Ud18vHAM0YYPjSq48W7c0SHjbbwWcg==",
       "type": "package",
       "path": "system.componentmodel.primitives/4.3.0",
       "files": [
@@ -3276,7 +3276,7 @@
       ]
     },
     "System.ComponentModel.TypeConverter/4.3.0": {
-      "sha512": "16pQ6P+EdhcXzPiEK4kbA953Fu0MNG2ovxTZU81/qsCd1zPRsKc3uif5NgvllCY598k6bI0KUyKW8fanlfaDQg==",
+      "sha512": "BFfLnXuH+KCpvnNyNhVLP3YsUtSweAs5ewaIDsd+5BCr3tiQNpBOu+wv2mC5eDo2wq3QstBDNUAVU1k+IoDtnA==",
       "type": "package",
       "path": "system.componentmodel.typeconverter/4.3.0",
       "files": [
@@ -4522,18 +4522,18 @@
       ]
     },
     "System.Reflection.Metadata/1.3.0": {
-      "sha512": "jMSCxA4LSyKBGRDm/WtfkO03FkcgRzHxwvQRib1bm2GZ8ifKM1MX1al6breGCEQK280mdl9uQS7JNPXRYk90jw==",
+      "sha512": "CejiiNDbJtgJ+iTzDTf9wuSNJxYPn6AS5jm3HatKcLwh2qTN9utjTUnLMktBENspjDmOPtYTydajG2FcHJqusw==",
       "type": "package",
       "path": "system.reflection.metadata/1.3.0",
       "files": [
-        "System.Reflection.Metadata.1.3.0.nupkg.sha512",
-        "System.Reflection.Metadata.nuspec",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/netstandard1.1/System.Reflection.Metadata.dll",
         "lib/netstandard1.1/System.Reflection.Metadata.xml",
         "lib/portable-net45+win8/System.Reflection.Metadata.dll",
-        "lib/portable-net45+win8/System.Reflection.Metadata.xml"
+        "lib/portable-net45+win8/System.Reflection.Metadata.xml",
+        "system.reflection.metadata.1.3.0.nupkg.sha512",
+        "system.reflection.metadata.nuspec"
       ]
     },
     "System.Reflection.Primitives/4.3.0": {
@@ -5079,7 +5079,7 @@
       ]
     },
     "System.Runtime.Serialization.Formatters/4.3.0": {
-      "sha512": "KT591AkTNFOTbhZlaeMVvfax3RqhH1EJlcwF50Wm7sfnBLuHiOeZRRKrr1ns3NESkM20KPZ5Ol/ueMq5vg4QoQ==",
+      "sha512": "k1L6HKW5CF1DUdhhBF2u57FUunrCBnKP9CZiGPAfUQdzGhkTli2KWDPGZvEMr+6uiOIoSDThIC5wZMvTdCPztA==",
       "type": "package",
       "path": "system.runtime.serialization.formatters/4.3.0",
       "files": [
@@ -5163,7 +5163,7 @@
       ]
     },
     "System.Runtime.Serialization.Primitives/4.3.0": {
-      "sha512": "Wz+0KOukJGAlXjtKr+5Xpuxf8+c8739RI1C+A2BoQZT+wMCCoMDDdO8/4IRHfaVINqL78GO8dW8G2lW/e45Mcw==",
+      "sha512": "Jel53luJ+Cmmg6ffefOaBRmigoNuKP3Ts9C9/WNjaFjdJYB42RabT6ghKc2PPy5GlWYfxCSw2ckji9xVKQMN1g==",
       "type": "package",
       "path": "system.runtime.serialization.primitives/4.3.0",
       "files": [
@@ -5829,7 +5829,7 @@
       ]
     },
     "System.Xml.XmlDocument/4.3.0": {
-      "sha512": "lJ8AxvkX7GQxpC6GFCeBj8ThYVyQczx2+f/cWHJU8tjS7YfI6Cv6bon70jVEgs2CiFbmmM8b9j1oZVx0dSI2Ww==",
+      "sha512": "PXFxgQk6m2k2Cgx2m7Ai3BrFY+eidEul6D1RQLVUZr6MaQqIOffcT4+twrntaj/2mqWNyNdLvVMoZ9S1XuoKEw==",
       "type": "package",
       "path": "system.xml.xmldocument/4.3.0",
       "files": [
@@ -5972,7 +5972,7 @@
       ]
     },
     "System.Xml.XPath.XmlDocument/4.0.1": {
-      "sha512": "Zm2BdeanuncYs3NhCj4c9e1x3EXFzFBVv2wPEc/Dj4ZbI9R8ecLSR5frAsx4zJCPBtKQreQ7Q/KxJEohJZbfzA==",
+      "sha512": "g5p3EpsPw06IySHo+vZw4Q0K0Z1U8HHoYx8f50cl0xy6AdP1jLe7xUqQmgooZRlQdKTbyV/96pxd6SKalzpHvQ==",
       "type": "package",
       "path": "system.xml.xpath.xmldocument/4.0.1",
       "files": [
@@ -6022,7 +6022,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\g.canossa\\.nuget\\packages\\": {},
+    "C:\\Users\\gcanossa\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
@@ -6034,14 +6034,14 @@
       "projectUniqueName": "C:\\Progetti\\LiteWebSocket\\test\\LiteWsTest\\LiteWsTest.csproj",
       "projectName": "LiteWsTest",
       "projectPath": "C:\\Progetti\\LiteWebSocket\\test\\LiteWsTest\\LiteWsTest.csproj",
-      "packagesPath": "C:\\Users\\g.canossa\\.nuget\\packages\\",
+      "packagesPath": "C:\\Users\\gcanossa\\.nuget\\packages\\",
       "outputPath": "C:\\Progetti\\LiteWebSocket\\test\\LiteWsTest\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\g.canossa\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\gcanossa\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -6049,6 +6049,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Users\\gcanossa\\.dotnet\\NuGetFallbackFolder": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
