@@ -7,6 +7,7 @@ using LiteWebSocket.Routing;
 using LiteWebSocket.Exceptions;
 using System.Reflection;
 using System.Threading.Tasks;
+using LiteWebSocket.Filters;
 
 namespace LiteWebSocket.Routing
 {
@@ -35,7 +36,102 @@ namespace LiteWebSocket.Routing
             _serviceProvider = serviceProvider;
         }
         
-        protected virtual IEnumerable<Message> AcceptMessage(Message message)
+        protected IEnumerable<IFilter> GetFilters(MethodInfo action)
+        {
+            List<IFilter> results = new List<IFilter>();
+
+            results.AddRange(LiteWebSocketDefaults.Filters);
+
+            results.AddRange(action.DeclaringType.GetCustomAttributes().Where(p => p is IFilter).Select(p => p as IFilter));
+
+            results.AddRange(action.GetCustomAttributes().Where(p => p is IFilter).Select(p => p as IFilter));
+
+            return results;
+        }
+
+        protected Action<ActionContext> WrapAction(MethodInfo method, object target, Message arg)
+        {
+            if (typeof(Task).IsAssignableFrom(method.ReturnType))
+                return null;
+            if (method.ReturnType == typeof(void))
+                return ctx => { };
+            else if (typeof(IOperationResult).IsAssignableFrom(method.ReturnType))
+                return ctx => { ctx.Results.AddRange((method.Invoke(target, new object[] { arg }) as IOperationResult).GetMessages()); };
+            else
+                return null;//TODO: maybe an exception would be better
+        }
+        protected Func<ActionContext, Task> WrapActionAsync(MethodInfo method, object target, Message arg)
+        {
+            if (!typeof(Task).IsAssignableFrom(method.ReturnType))
+                return null;//TODO: maybe an exception would be better
+            else if (method.ReturnType.IsGenericType && typeof(IOperationResult).IsAssignableFrom(method.ReturnType.GetGenericArguments().First()))
+                return async ctx =>
+                {
+                    ctx.Results.AddRange((await (method.Invoke(target, new object[] { arg }) as Task<IOperationResult>)).GetMessages());
+                };
+            else
+                return async ctx =>
+                {
+                    await (method.Invoke(target, new object[] { arg }) as Task);
+                };
+        }
+
+        protected Action<ActionContext> WrapFilter(Action<ActionContext> handler, IFilter filter)
+        {
+            return (ActionContext ctx) =>
+            {
+                filter.Accept(handler, ctx);
+            };
+        }
+        protected Func<ActionContext, Task> WrapFilterAsync(Func<ActionContext, Task> handler, IFilter filter)
+        {
+            return async (ActionContext ctx) =>
+            {
+                await filter.AcceptAsync(handler, ctx);
+            };
+        }
+
+        protected async Task ExecuteAction(MethodInfo method, MessageController target, Message message, OperationContext ctx)
+        {
+            IEnumerable<IFilter> filters = GetFilters(method);
+            object func = null;
+            if ((func = WrapAction(method, target, message)) != null)
+            {
+                Action<ActionContext> action = func as Action<ActionContext>;
+                if (filters != null)
+                {
+                    foreach (IFilter item in filters)
+                    {
+                        action = WrapFilter(action, item);
+                    }
+                }
+
+                ActionContext a_ctx = new ActionContext(target, method, message, ctx);
+                action(a_ctx);
+
+                ctx.AddResult(a_ctx.Results);
+            }
+            else if ((func = WrapActionAsync(method, target, message)) != null)
+            {
+                Func<ActionContext, Task> action = func as Func<ActionContext, Task>;
+                if (filters != null)
+                {
+                    foreach (IFilter item in filters)
+                    {
+                        action = WrapFilterAsync(action, item);
+                    }
+                }
+
+                ActionContext a_ctx = new ActionContext(target, method, message, ctx);
+                await action(a_ctx);
+
+                ctx.AddResult(a_ctx.Results);
+            }
+            else
+                throw new Exception(); //TODO: decide which exception
+        }
+
+        protected async virtual Task<IEnumerable<Message>> AcceptMessage(Message message)
         {
             if (!_registredHandlers.Values.Any(p => p == message.GetType()))
                 throw new NotSupportedMessageTypeException($"type: {message.GetType().FullName}");
@@ -47,14 +143,13 @@ namespace LiteWebSocket.Routing
             OperationContext ctx = GetContext();
             foreach (KeyValuePair<MethodInfo, MessageController> item in ctrls)
             {
-                //TODO: wrapping
-                item.Value.Context = ctx;
-                ctx.AddResult(item.Key.Invoke(item.Value, new object[] { message }));
+                await ExecuteAction(item.Key, item.Value, message, ctx);
             }
 
             return ctx.Results;
         }
 
+        //TODO: verify if it is necessary
         public string AcceptSerializedBulk(string messages)
         {
             IEnumerable<Message> msgs = _serializer.Deserialize(messages, _supportedTypes);
@@ -64,8 +159,7 @@ namespace LiteWebSocket.Routing
             List<Task<IEnumerable<Message>>> _results = new List<Task<IEnumerable<Message>>>();
             foreach (Message item in msgs)
             {
-                //TODO: add wrapping
-                _results.Add(Task.Run(() => AcceptMessage(item)));
+                _results.Add(AcceptMessage(item));
             }
 
             return _serializer.Serialize(_results.Select(p=>p.ConfigureAwait(false).GetAwaiter().GetResult()).SelectMany(p=>p), _supportedTypes);

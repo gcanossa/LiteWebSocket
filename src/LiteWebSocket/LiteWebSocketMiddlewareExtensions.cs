@@ -34,10 +34,10 @@ namespace LiteWebSocket
 
             return ext
                 .UseWebSockets(new WebSocketOptions() {})//TODO: configure
-                .Map(options.BasePath.Add(new PathString(LiteWebSocketDefaults.SyncEndpoint)), LiteWebSocketHandlers.SyncHandler(resolver))
-                .Map(options.BasePath.Add(new PathString(LiteWebSocketDefaults.MonitorEndpoint)), LiteWebSocketHandlers.MonitorHandler(resolver))
-                .Map(options.BasePath.Add(new PathString(LiteWebSocketDefaults.SocketEndpoint)), LiteWebSocketHandlers.SocketHandler(resolver))
-                .Map(options.BasePath.Add(new PathString(LiteWebSocketDefaults.SocketWsEndpoint)), LiteWebSocketHandlers.SocketWsHandler(resolver));
+                .Map(options.BasePath.Add(new PathString(LiteWebSocketDefaults.Endpoints.SyncEndpoint)), LiteWebSocketHandlers.SyncHandler(resolver))
+                .Map(options.BasePath.Add(new PathString(LiteWebSocketDefaults.Endpoints.MonitorEndpoint)), LiteWebSocketHandlers.MonitorHandler(resolver))
+                .Map(options.BasePath.Add(new PathString(LiteWebSocketDefaults.Endpoints.SocketEndpoint)), LiteWebSocketHandlers.SocketHandler(resolver))
+                .Map(options.BasePath.Add(new PathString(LiteWebSocketDefaults.Endpoints.SocketWsEndpoint)), LiteWebSocketHandlers.SocketWsHandler(resolver));
         }
     }
 }

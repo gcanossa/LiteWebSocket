@@ -20,10 +20,24 @@ namespace LiteWebSocket
             {
                 if (context.Request.Method.ToUpper() == "POST")
                 {
+                    context.Response.Headers.Append("Access-Control-Allow-Origin", "*");
                     await ext(context);
+                    context.Response.Body.Close();
+                }
+                else if (context.Request.Method.ToUpper() == "OPTIONS" && context.Request.Headers.ContainsKey("Access-Control-Request-Method"))
+                {
+                    context.Response.Headers.Append("Access-Control-Allow-Origin", "*");//TODO: make the origin an option value/list
+                    context.Response.Headers.AppendList("Access-Control-Allow-Methods", new string[] { "POST", "OPTIONS" });
+                    context.Response.Headers.Append("Access-Control-Allow-Headers", "*");
+                    context.Response.Headers.Append("Access-Control-Max-Age", "86400");
+
+                    context.Response.Body.Close();
                 }
                 else
+                {
                     context.Response.StatusCode = 404;
+                    context.Response.Body.Close();
+                }
             };
         }
 
@@ -51,7 +65,7 @@ namespace LiteWebSocket
             {
                 byte[] data = new byte[ext.ContentLength.Value];
                 await ext.Body.ReadAsync(data, 0, data.Length);
-                //TODO: check encoding
+
                 return Encoding.UTF8.GetString(data);
             }
         }
